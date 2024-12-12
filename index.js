@@ -1,10 +1,8 @@
 import express  from 'express';
 import pg from 'pg';
 import { config } from 'dotenv';
-import cors from 'cors'
 
 config()
-
 
 const app = express();
 const pool = new pg.Pool({
@@ -19,9 +17,6 @@ app.get('/invitados',async(req,res)=>{
   const result = await pool.query('SELECT * FROM invitados')
   return res.json(result.rows[0])
 })
-
-
-
 
 // Endpoint para insertar datos en la tabla invitados
 app.post('/api/invitados', async (req, res) => {

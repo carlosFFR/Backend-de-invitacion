@@ -1,5 +1,6 @@
 import express  from 'express';
 import pg from 'pg';
+import cors from 'cors'
 import { config } from 'dotenv';
 
 config()
@@ -10,17 +11,17 @@ const pool = new pg.Pool({
 })
 
 const port = 3000;
+app.use(cors())
 app.use(express.json());
 
 app.get('/invitados',async(req,res)=>{
-  res.header('Access-Control-Allow-Origin','*')
+
   const result = await pool.query('SELECT * FROM invitados')
   return res.json(result.rows[0])
 })
 
 // Endpoint para insertar datos en la tabla invitados
 app.post('/api/invitados', async (req, res) => {
-  res.header('Access-Control-Allow-Origin','*')
   const { nombre, email, confirmacion, mensaje } = req.body;
 
   // Validación básica

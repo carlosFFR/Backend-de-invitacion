@@ -16,13 +16,13 @@ app.use(express.json());
 
 app.get('/invitados',async(req,res)=>{
 
-  const result = await pool.query('SELECT * FROM invitados')
-  return res.json(result.rows[0])
+  const result = await pool.query('select * from invitados')
+  return res.json(result.rows)
 })
 
 // Endpoint para insertar datos en la tabla invitados
 app.post('/api/invitados', async (req, res) => {
-  const { nombre, email, confirmacion, mensaje } = req.body;
+  const { nombre, email, confirmacion, mensaje  } = req.body;
 
   // Validación básica
   if (!nombre || !email || !confirmacion || !mensaje) {

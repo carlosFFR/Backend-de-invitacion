@@ -8,11 +8,16 @@ config()
 const app = express();
 const pool = new pg.Pool({
  connectionString: process.env.DATABASE_URL,
+ 
 })
 
 const port = 3000;
 app.use(cors())
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.json({ message: 'Servidor funcionando correctamente' });
+});
 
 app.get('/invitados',async(req,res)=>{
 

@@ -8,7 +8,6 @@ config()
 const app = express();
 const pool = new pg.Pool({
  connectionString: process.env.DATABASE_URL,
- 
 })
 
 const port = 3000;
@@ -16,12 +15,27 @@ app.use(cors())
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Servidor funcionando correctamente' });
+  res.send('<h1> Servidor funcionando correctamente</h1>');
 });
 
 app.get('/invitados',async(req,res)=>{
 
-  const result = await pool.query('select * from invitados')
+  const result = await pool.query('select nombre,confirmacion,email from invitados')
+  return res.json(result.rows)
+})
+app.get('/total', async (req, res) => {
+  try {
+    const result = await pool.query("SELECT COUNT(*) AS total FROM invitados WHERE confirmacion = 'si'");
+    res.json({ total: result.rows[0].total });
+  } catch (error) {
+    console.error('Erro ao consultar o banco de dados:', error);
+    res.status(500).json({ error: 'Erro no servidor' });
+  }
+});
+
+app.get('/message',async(req,res)=>{
+
+  const result = await pool.query('select nombre,mensaje from invitados')
   return res.json(result.rows)
 })
 
